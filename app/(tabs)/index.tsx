@@ -8,7 +8,7 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.mainContainer}>
       <View style={styles.barContainer}>
-        <SearchBar />
+        {/* <SearchBar /> */}
         <TouchableOpacity>
           <SettingsIcon style={styles.cogIcon} />
         </TouchableOpacity>

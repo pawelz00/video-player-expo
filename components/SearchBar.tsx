@@ -1,8 +1,21 @@
 import { Colors } from "@/constants/Colors";
 import { TextInput, View, StyleSheet } from "react-native";
 import SearchIcon from "@/assets/icons/search-icon.svg";
+import { useCallback } from "react";
+import { debounce } from "lodash";
 
-export default function SearchBar() {
+interface SearchBarProps {
+  onSearch: (text: string) => void;
+}
+
+export default function SearchBar({ onSearch }: SearchBarProps) {
+  const debouncedSearch = useCallback(
+    debounce((text: string) => {
+      onSearch(text);
+    }, 3000),
+    []
+  );
+
   return (
     <View style={styles.searchBarContainer}>
       <SearchIcon
@@ -15,6 +28,7 @@ export default function SearchBar() {
         style={styles.searchBarInput}
         placeholder="Search videos"
         placeholderTextColor={Colors.secondary}
+        onChangeText={debouncedSearch}
       />
     </View>
   );

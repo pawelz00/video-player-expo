@@ -1,10 +1,16 @@
 import { Colors } from "@/constants/Colors";
 import { TextInput, View, StyleSheet } from "react-native";
+import SearchIcon from "@/assets/icons/search-icon.svg";
 
 export default function SearchBar() {
-  // Create me clickable search bar with input
   return (
     <View style={styles.searchBarContainer}>
+      <SearchIcon
+        width={24}
+        height={24}
+        stroke={Colors.secondary}
+        strokeWidth={2}
+      />
       <TextInput
         style={styles.searchBarInput}
         placeholder="Search videos"
@@ -18,13 +24,15 @@ const styles = StyleSheet.create({
   searchBarContainer: {
     borderRadius: 16,
     padding: 8,
-    backgroundColor: "#f0f0f0",
     flexDirection: "row",
     borderWidth: 2,
+    borderColor: Colors.secondary,
+    gap: 12,
+    flex: 1,
   },
   searchBarInput: {
-    flex: 1,
     fontSize: 16,
     color: "#000",
+    width: "auto",
   },
 });

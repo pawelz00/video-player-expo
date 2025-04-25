@@ -1,7 +1,9 @@
 import { Tabs } from "expo-router";
-import { Platform } from "react-native";
+import { Platform, Text } from "react-native";
 import { HapticTab } from "@/components/HapticTab";
 import { Colors } from "@/constants/Colors";
+import HomeIcon from "../../assets/icons/home-icon.svg";
+import SearchIcon from "../../assets/icons/search-icon.svg";
 
 export default function TabLayout() {
   return (
@@ -12,6 +14,7 @@ export default function TabLayout() {
         tabBarLabelStyle: {
           fontSize: 16,
           fontWeight: "regular",
+          marginTop: 4,
         },
         headerShown: false,
         tabBarButton: HapticTab,
@@ -27,9 +30,9 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
-          // tabBarIcon: ({ color }) => (
-          //   <IconSymbol size={28} name="house.fill" color={color} />
-          // ),
+          tabBarIcon: ({ color }) => (
+            <HomeIcon width={32} height={32} fill={color} />
+          ),
           tabBarStyle: {
             backgroundColor: Colors.primary,
           },
@@ -39,9 +42,9 @@ export default function TabLayout() {
         name="search"
         options={{
           title: "Search",
-          // tabBarIcon: ({ color }) => (
-          //   <IconSymbol size={28} name="paperplane.fill" color={color} />
-          // ),
+          tabBarIcon: ({ color }) => (
+            <SearchIcon width={32} height={32} stroke={color} strokeWidth={3} />
+          ),
           tabBarStyle: {
             backgroundColor: Colors.primary,
           },

@@ -35,18 +35,27 @@ export default function SearchScreen() {
 
     try {
       const url = `https://www.googleapis.com/youtube/v3/search?${params.toString()}`;
-
       const response = await fetch(url);
-
       const data = await response.json();
 
+      const videoIds = data.items.map((item: any) => item.id.videoId).join(",");
+
+      const statsResponse = await fetch(
+        `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoIds}&key=${YOUTUBE_API_KEY}`
+      );
+      const statsData = await statsResponse.json();
+
+      const enrichedItems = data.items.map((item: any, index: number) => ({
+        ...item,
+        statistics: statsData.items[index]?.statistics,
+      }));
+
       if (newSearch) {
-        setResults(data.items);
+        setResults(enrichedItems);
         setTotalResults(data.pageInfo?.totalResults || 0);
       } else {
-        // Todo: Handle the case
         // @ts-ignore
-        setResults((prev) => [...prev, ...data.items]);
+        setResults((prev) => [...prev, ...enrichedItems]);
       }
 
       setNextPageToken(data.nextPageToken);

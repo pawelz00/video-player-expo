@@ -1,21 +1,46 @@
+import { useRouter } from "expo-router";
 import React from "react";
-import { View, Image, Text, StyleSheet } from "react-native";
+import { View, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 interface Props {
   item: any;
 }
 
 const VideoItem: React.FC<Props> = ({ item }) => {
-  const { title, thumbnails, channelTitle, publishedAt } = item.snippet;
+  const router = useRouter();
+  const { title, thumbnails, channelTitle, publishedAt, description } =
+    item.snippet;
+  const { viewCount, likeCount } = item.statistics;
+
+  const handlePress = () => {
+    router.push({
+      pathname: "/details",
+      params: {
+        title,
+        thumbnail: thumbnails.medium.url,
+        channelTitle,
+        publishedAt,
+        description,
+        viewCount,
+        likeCount,
+      },
+    });
+  };
+
   return (
-    <View style={styles.card}>
-      <Image source={{ uri: thumbnails.medium.url }} style={styles.thumbnail} />
-      <Text style={styles.channel}>{channelTitle}</Text>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.date}>
-        {new Date(publishedAt).toLocaleDateString()}
-      </Text>
-    </View>
+    <TouchableOpacity onPress={handlePress}>
+      <View style={styles.card}>
+        <Image
+          source={{ uri: thumbnails.medium.url }}
+          style={styles.thumbnail}
+        />
+        <Text style={styles.channel}>{channelTitle}</Text>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.date}>
+          {new Date(publishedAt).toLocaleDateString()}
+        </Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 

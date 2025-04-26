@@ -47,6 +47,9 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     gap: 16,
     paddingLeft: Sizes.paddingVertical,
+    borderBottomWidth: 2,
+    borderBottomColor: Colors.secondary,
+    marginBottom: 8,
   },
   textContainer: {
     flexDirection: "row",

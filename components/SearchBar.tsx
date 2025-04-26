@@ -17,8 +17,7 @@ export default function SearchBar({
   pushToSearch,
 }: SearchBarProps) {
   const router = useRouter();
-  const [searchText, setSearchText] = useState(search ?? "");
-
+  const [searchText, setSearchText] = useState<string>(search ?? "");
   const debouncedSearch = useCallback(
     debounce((text: string) => {
       onSearch?.(text);

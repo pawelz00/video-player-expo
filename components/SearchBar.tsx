@@ -26,11 +26,22 @@ export default function SearchBar({
     [onSearch]
   );
 
-  const handleTextChange = (text: string) => {
-    if (pushToSearch) {
+  const debouncedPush = useCallback(
+    debounce((text: string) => {
       router.push({
         pathname: "/search",
+        params: {
+          searchQuery: text,
+        },
       });
+    }, 2000),
+    [router]
+  );
+
+  const handleTextChange = (text: string) => {
+    if (pushToSearch) {
+      setSearchText(text);
+      debouncedPush(text);
     } else {
       setSearchText(text);
       debouncedSearch(text);

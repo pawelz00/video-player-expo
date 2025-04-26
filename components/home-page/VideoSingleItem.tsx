@@ -12,7 +12,9 @@ export default function VideoSingleItem({ item }: VideoItemProps) {
   return (
     <View style={styles.viewContainer}>
       <Image style={styles.thumbnail} source={{ uri: thumbnails.medium.url }} />
-      <Text style={styles.title}>{title}</Text>
+      <Text numberOfLines={2} style={styles.title}>
+        {title}
+      </Text>
       <Text style={styles.date}>
         {new Date(publishedAt).toLocaleDateString()}
       </Text>

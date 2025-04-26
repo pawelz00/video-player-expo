@@ -1,32 +1,48 @@
 import SearchBar from "@/components/SearchBar";
 import { Sizes } from "@/constants/Sizes";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Text,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SettingsIcon from "@/assets/icons/settings-icon.svg";
-import VideoSingleItem from "@/components/home-page/VideoSingleItem";
+import VideoList from "@/components/home-page/VideoList";
+import { useYoutubeDataHome } from "@/hooks/useYoutubeData";
+import { Colors } from "@/constants/Colors";
 
 export default function HomeScreen() {
+  const { data } = useYoutubeDataHome();
+
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <View style={styles.barContainer}>
-        <SearchBar />
-        <TouchableOpacity>
-          <SettingsIcon style={styles.cogIcon} />
-        </TouchableOpacity>
-      </View>
-      <VideoSingleItem
-        item={{
-          snippet: {
-            title: "Sample Video",
-            thumbnails: {
-              medium: { url: "https://picsum.photos/200" },
-            },
-            publishedAt: "2023-10-01T00:00:00Z",
-            channelTitle: "Sample Channel",
-            description: "This is a sample video description.",
-          },
-        }}
-      />
+      <ScrollView>
+        <View style={styles.barContainer}>
+          <SearchBar pushToSearch />
+          <TouchableOpacity>
+            <SettingsIcon style={styles.cogIcon} />
+          </TouchableOpacity>
+        </View>
+        {data.map(({ category, items, isLoading, isError }) =>
+          isLoading ? (
+            <ActivityIndicator
+              style={styles.loadingIndicator}
+              key={category}
+              size="large"
+              color={Colors.secondary}
+            />
+          ) : isError ? (
+            <Text style={styles.errorText} key={category}>
+              Error loading {category} videos
+            </Text>
+          ) : (
+            <VideoList key={category} title={category} items={items} />
+          )
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -43,9 +59,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 16,
     alignItems: "center",
+    marginBottom: 32,
   },
   cogIcon: {
     width: 32,
     height: 32,
+  },
+  errorText: {
+    color: Colors.secondary,
+    fontSize: 16,
+    fontFamily: "Regular",
+    textAlign: "center",
+    marginTop: 20,
+  },
+  loadingIndicator: {
+    marginTop: 20,
   },
 });

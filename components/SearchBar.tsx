@@ -3,12 +3,15 @@ import { TextInput, View, StyleSheet } from "react-native";
 import SearchIcon from "@/assets/icons/search-icon.svg";
 import { useCallback } from "react";
 import { debounce } from "lodash";
+import { useRouter } from "expo-router";
 
 interface SearchBarProps {
   onSearch?: (text: string) => void;
+  pushToSearch?: boolean;
 }
 
-export default function SearchBar({ onSearch }: SearchBarProps) {
+export default function SearchBar({ onSearch, pushToSearch }: SearchBarProps) {
+  const router = useRouter();
   const debouncedSearch = useCallback(
     debounce((text: string) => {
       if (onSearch) {
@@ -30,7 +33,14 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
         style={styles.searchBarInput}
         placeholder="Search videos"
         placeholderTextColor={Colors.secondary}
-        onChangeText={debouncedSearch}
+        onChangeText={(text) => {
+          if (pushToSearch) {
+            router.push("/search");
+          } else {
+            debouncedSearch(text);
+          }
+          debouncedSearch(text);
+        }}
       />
     </View>
   );
@@ -50,5 +60,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#000",
     width: "auto",
+    fontFamily: "Regular",
   },
 });

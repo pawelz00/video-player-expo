@@ -3,16 +3,30 @@ import { Sizes } from "@/constants/Sizes";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SettingsIcon from "@/assets/icons/settings-icon.svg";
+import VideoSingleItem from "@/components/home-page/VideoSingleItem";
 
 export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.mainContainer}>
       <View style={styles.barContainer}>
-        {/* <SearchBar /> */}
+        <SearchBar />
         <TouchableOpacity>
           <SettingsIcon style={styles.cogIcon} />
         </TouchableOpacity>
       </View>
+      <VideoSingleItem
+        item={{
+          snippet: {
+            title: "Sample Video",
+            thumbnails: {
+              medium: { url: "https://picsum.photos/200" },
+            },
+            publishedAt: "2023-10-01T00:00:00Z",
+            channelTitle: "Sample Channel",
+            description: "This is a sample video description.",
+          },
+        }}
+      />
     </SafeAreaView>
   );
 }

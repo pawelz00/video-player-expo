@@ -1,6 +1,6 @@
 import React from "react";
 import { FlatList, Text, View, StyleSheet } from "react-native";
-import VideoItem from "./VideoItem";
+import VideoSingleItem from "./VideoSingleItem";
 
 interface Props {
   data: any[];
@@ -12,7 +12,7 @@ const VideoList: React.FC<Props> = ({ data, onEndReached, loading }) => (
   <FlatList
     data={data}
     keyExtractor={(item) => item.id.videoId}
-    renderItem={({ item }) => <VideoItem item={item} />}
+    renderItem={({ item }) => <VideoSingleItem item={item} />}
     onEndReached={onEndReached}
     onEndReachedThreshold={0.5}
     ListFooterComponent={loading ? <Text>Loading more...</Text> : null}

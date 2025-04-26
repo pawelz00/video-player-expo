@@ -5,13 +5,15 @@ import { useCallback } from "react";
 import { debounce } from "lodash";
 
 interface SearchBarProps {
-  onSearch: (text: string) => void;
+  onSearch?: (text: string) => void;
 }
 
 export default function SearchBar({ onSearch }: SearchBarProps) {
   const debouncedSearch = useCallback(
     debounce((text: string) => {
-      onSearch(text);
+      if (onSearch) {
+        onSearch(text);
+      }
     }, 3000),
     []
   );

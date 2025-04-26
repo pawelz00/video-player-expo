@@ -1,16 +1,21 @@
+import { VideoItem } from "@/types/video-item";
 import { useRouter } from "expo-router";
 import React from "react";
 import { View, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-interface Props {
-  item: any;
+interface VideoItemProps {
+  item: VideoItem;
 }
 
-const VideoItem: React.FC<Props> = ({ item }) => {
+export default function VideoSingleItem({ item }: VideoItemProps) {
   const router = useRouter();
   const { title, thumbnails, channelTitle, publishedAt, description } =
     item.snippet;
-  const { viewCount, likeCount } = item.statistics;
+
+  const { viewCount, likeCount } = item.statistics ?? {
+    viewCount: null,
+    likeCount: null,
+  };
 
   const handlePress = () => {
     router.push({
@@ -42,7 +47,7 @@ const VideoItem: React.FC<Props> = ({ item }) => {
       </View>
     </TouchableOpacity>
   );
-};
+}
 
 const styles = StyleSheet.create({
   card: {
@@ -70,5 +75,3 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
 });
-
-export default VideoItem;

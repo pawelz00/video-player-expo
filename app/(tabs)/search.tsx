@@ -1,16 +1,17 @@
 import SearchBar from "@/components/SearchBar";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Sizes } from "@/constants/Sizes";
 import { useCallback, useState } from "react";
 import ResultsCount from "@/components/search-page/ResultsCount";
 import VideoList from "@/components/search-page/VideoList";
 import Constants from "expo-constants";
+import type { VideoItem } from "@/types/video-item";
 
 const YOUTUBE_API_KEY = Constants.expoConfig?.extra?.youtubeApiKey;
 
 export default function SearchScreen() {
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<VideoItem[] | null>([]);
   const [nextPageToken, setNextPageToken] = useState("");
   const [totalResults, setTotalResults] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
@@ -38,6 +39,12 @@ export default function SearchScreen() {
       const response = await fetch(url);
       const data = await response.json();
 
+      if (!data.items || data.items.length === 0) {
+        setResults([]);
+        setTotalResults(0);
+        return;
+      }
+
       const videoIds = data.items.map((item: any) => item.id.videoId).join(",");
 
       const statsResponse = await fetch(
@@ -54,8 +61,12 @@ export default function SearchScreen() {
         setResults(enrichedItems);
         setTotalResults(data.pageInfo?.totalResults || 0);
       } else {
-        // @ts-ignore
-        setResults((prev) => [...prev, ...enrichedItems]);
+        setResults((prev) => {
+          if (prev) {
+            return [...prev, ...enrichedItems];
+          }
+          return enrichedItems;
+        });
       }
 
       setNextPageToken(data.nextPageToken);
@@ -83,7 +94,11 @@ export default function SearchScreen() {
         <SearchBar onSearch={handleSearch} />
       </View>
       <ResultsCount count={totalResults} search={query} />
-      <VideoList data={results} onEndReached={loadMore} loading={loading} />
+      <VideoList
+        data={results ?? []}
+        onEndReached={loadMore}
+        loading={loading}
+      />
     </SafeAreaView>
   );
 }

@@ -1,25 +1,53 @@
 import { Colors } from "@/constants/Colors";
 import { TextInput, View, StyleSheet } from "react-native";
 import SearchIcon from "@/assets/icons/search-icon.svg";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { debounce } from "lodash";
 import { useRouter } from "expo-router";
 
 interface SearchBarProps {
+  search?: string;
   onSearch?: (text: string) => void;
   pushToSearch?: boolean;
 }
 
-export default function SearchBar({ onSearch, pushToSearch }: SearchBarProps) {
+export default function SearchBar({
+  search,
+  onSearch,
+  pushToSearch,
+}: SearchBarProps) {
   const router = useRouter();
+  const [searchText, setSearchText] = useState(search ?? "");
+
   const debouncedSearch = useCallback(
     debounce((text: string) => {
-      if (onSearch) {
-        onSearch(text);
-      }
-    }, 3000),
-    []
+      onSearch?.(text);
+    }, 2000),
+    [onSearch]
   );
+
+  const handleTextChange = (text: string) => {
+    if (pushToSearch) {
+      router.push({
+        pathname: "/search",
+      });
+    } else {
+      setSearchText(text);
+      debouncedSearch(text);
+    }
+  };
+
+  useEffect(() => {
+    if (search !== undefined) {
+      handleTextChange(search);
+    }
+  }, [search]);
+
+  useEffect(() => {
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [debouncedSearch]);
 
   return (
     <View style={styles.searchBarContainer}>
@@ -33,14 +61,8 @@ export default function SearchBar({ onSearch, pushToSearch }: SearchBarProps) {
         style={styles.searchBarInput}
         placeholder="Search videos"
         placeholderTextColor={Colors.secondary}
-        onChangeText={(text) => {
-          if (pushToSearch) {
-            router.push("/search");
-          } else {
-            debouncedSearch(text);
-          }
-          debouncedSearch(text);
-        }}
+        value={searchText}
+        onChangeText={handleTextChange}
       />
     </View>
   );

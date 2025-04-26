@@ -35,6 +35,7 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="details/index" options={{ headerShown: true }} />
         <Stack.Screen name="+not-found" />
       </Stack>
     </QueryClientProvider>

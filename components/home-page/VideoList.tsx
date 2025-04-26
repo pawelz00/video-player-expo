@@ -3,6 +3,7 @@ import { View, Text, FlatList, StyleSheet } from "react-native";
 import VideoSingleItem from "./VideoSingleItem";
 import { Colors } from "@/constants/Colors";
 import { Link } from "expo-router";
+import { Sizes } from "@/constants/Sizes";
 
 interface VideoListProps {
   items: VideoItem[] | null;
@@ -14,7 +15,13 @@ export default function VideoList({ items, title }: VideoListProps) {
     <View style={styles.mainContainer}>
       <View style={styles.textContainer}>
         <Text style={styles.title}>{title}</Text>
-        <Link href={"/search"} style={styles.showMore}>
+        <Link
+          href={{
+            pathname: "/search",
+            params: { searchQuery: title },
+          }}
+          style={styles.showMore}
+        >
           Show more
         </Link>
       </View>
@@ -39,11 +46,13 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     gap: 16,
+    paddingLeft: Sizes.paddingVertical,
   },
   textContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingRight: Sizes.paddingVertical,
   },
   title: {
     fontSize: 18,

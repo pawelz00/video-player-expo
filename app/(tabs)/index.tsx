@@ -51,8 +51,6 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingHorizontal: Sizes.padding,
-    paddingVertical: Sizes.paddingVertical,
   },
   barContainer: {
     maxWidth: "100%",
@@ -60,6 +58,8 @@ const styles = StyleSheet.create({
     gap: 16,
     alignItems: "center",
     marginBottom: 32,
+    paddingHorizontal: Sizes.padding,
+    paddingVertical: Sizes.paddingVertical,
   },
   cogIcon: {
     width: 32,

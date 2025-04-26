@@ -1,17 +1,45 @@
 import { Colors } from "@/constants/Colors";
 import { VideoItem } from "@/types/video-item";
-import { View, Image, Text, StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
+import { View, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 interface VideoItemProps {
   item: VideoItem;
 }
 
 export default function VideoSingleItem({ item }: VideoItemProps) {
-  const { title, thumbnails, publishedAt } = item.snippet;
+  const router = useRouter();
+  const { title, thumbnails, channelTitle, publishedAt, description } =
+    item.snippet;
+
+  const { viewCount, likeCount } = item.statistics ?? {
+    viewCount: null,
+    likeCount: null,
+  };
+
+  const handlePress = () => {
+    router.push({
+      pathname: "/details",
+      params: {
+        title,
+        thumbnail: thumbnails.medium.url,
+        channelTitle,
+        publishedAt,
+        description,
+        viewCount,
+        likeCount,
+      },
+    });
+  };
 
   return (
     <View style={styles.viewContainer}>
-      <Image style={styles.thumbnail} source={{ uri: thumbnails.medium.url }} />
+      <TouchableOpacity onPress={handlePress}>
+        <Image
+          style={styles.thumbnail}
+          source={{ uri: thumbnails.medium.url }}
+        />
+      </TouchableOpacity>
       <Text numberOfLines={2} style={styles.title}>
         {title}
       </Text>

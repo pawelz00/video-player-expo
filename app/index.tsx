@@ -18,7 +18,7 @@ export default function LoginScreen() {
       <View style={styles.bottomContainer}>
         <View style={styles.headerContainer}>
           <Text style={styles.headerText}>
-            Welcome to the best{"\n"}YouTube-based learning{"\n"}application.
+            Welcome to the best{"\n"}YouTube-based learning application.
           </Text>
         </View>
         <TouchableOpacity
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 22,
-    fontWeight: "semibold",
+    fontFamily: "Semibold",
     color: Colors.textWhite,
     lineHeight: 24,
     letterSpacing: 0.1,
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   loginButtonText: {
     color: Colors.textWhite,
     fontSize: 16,
-    fontWeight: "semibold",
+    fontFamily: "Semibold",
   },
   termsContainer: {
     alignItems: "center",
@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 13,
     lineHeight: 16,
+    fontFamily: "Medium",
   },
   termsLink: {
     textDecorationLine: "underline",
